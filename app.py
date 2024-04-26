@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session 
+from flask import Flask, render_template, request, redirect, session, flash 
 from flask_debugtoolbar import DebugToolbarExtension
 from surveys import surveys
 
@@ -17,9 +17,11 @@ def question(question_id):
     responses = session.get('responses')
     if responses is None:
         # trying to access question page too soon
+        flash("You are trying to access an invalid question. Please start from the beginning")
         return redirect("/")
     if question_id != len(responses):
         # trying to access questions out of order
+        flash("You are trying to access an invalid question. Please answer the questions in order.")
         return redirect(f"/questions/{len(responses)}")
     if question_id == len(surveys['satisfaction'].questions):
         # all questions are answered

@@ -1,7 +1,16 @@
 {% extends "base.html" %}
-{% block title %}Survey Question One{% endblock %}
+{% block title %}Satisfaction Survey{% endblock %}
 {% block content %}
-
+<h1>Satisfaction Survey</h1>
+{% with messages = get_flashed_messages() %}
+   {% if messages %}
+   <ul class=flashes>
+    {% for message in messages %}
+    <li>{{message}}</li>
+    {% endfor %}
+   </ul>
+   {% endif %}
+{% endwith %}
 <form method="POST">
     <label for="question">{{question.question}}</label><br>
     {% for choice in question.choices %}
