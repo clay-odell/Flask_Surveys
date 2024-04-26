@@ -6,6 +6,16 @@
     <title>{% block title %}{% endblock %} </title>
 </head>
 <body>
+    <h1>Satisfaction Survey</h1>
+{% with messages = get_flashed_messages() %}
+   {% if messages %}
+   <ul class=flashes>
+    {% for message in messages %}
+    <li>{{message}}</li>
+    {% endfor %}
+   </ul>
+   {% endif %}
+{% endwith %}
     <main>
         {% block content %} {% endblock %}
     </main>

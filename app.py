@@ -3,18 +3,25 @@ from flask_debugtoolbar import DebugToolbarExtension
 from surveys import surveys
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "110-104-541"
 
-
-@app.route("/")
+@app.route("/", methods=['POST', 'GET'])
 def root():
-    session['responses'] = []
+    if request.method == 'POST':
+        session['responses'] = []
+        session['survey_started'] = True
+        return redirect ('/questions/0')
+    elif 'survey_started' in session and session['survey_started']:
+        flash("You have already started the survey.")
+        return redirect(f"/questions/{len(session['responses'])}")
     return render_template("root.html")
 
 @app.route("/questions/<int:question_id>", methods=['GET', 'POST'])
 def question(question_id):
     survey = surveys['satisfaction']
     responses = session.get('responses')
+    if not session.get('survey_started', False):
+        flash("You need to start the survey first.")
+        return redirect("/")
     if responses is None:
         # trying to access question page too soon
         flash("You are trying to access an invalid question. Please start from the beginning")
