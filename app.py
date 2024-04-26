@@ -3,6 +3,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from surveys import surveys
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'supersecretkey1234'
 
 @app.route("/", methods=['POST', 'GET'])
 def root():
